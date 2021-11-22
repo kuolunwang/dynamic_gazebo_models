@@ -54,6 +54,8 @@
 #define CONTEXT_SPACE_X_RANGE 2.0 // in m
 #define CONTEXT_SPACE_Y_RANGE 2.0
 #define CONTEXT_SPACE_Z_RANGE 2.0
+#include <ignition/math/Vector3.hh>
+#include <optional>
 
 
 namespace gazebo
@@ -66,9 +68,9 @@ namespace gazebo
   private:
     physics::ModelPtr model;
     physics::LinkPtr doorLink;
-    math::Pose currPose, currFpvPose; 
+    ignition::math::Pose3d currPose, currFpvPose; 
 
-    math::Vector3 cmd_vel;
+    ignition::math::Vector3d cmd_vel;
 
     bool isActive;
     int activeDoors[100];
@@ -198,11 +200,11 @@ namespace gazebo
 
       if (type == SLIDE) {
         // compute slide constraints
-        float spawnPosX = model->GetWorldPose().pos.x;
+        float spawnPosX = model->WorldPose().Pos().X();
         minPosX = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosX - max_trans_dist : spawnPosX;
         maxPosX = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosX : spawnPosX + max_trans_dist;
 
-        float spawnPosY = model->GetWorldPose().pos.y;
+        float spawnPosY = model->WorldPose().Pos().Y();
         minPosY = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosY - max_trans_dist : spawnPosY;
         maxPosY = door_direction.compare(DIRECTION_SLIDE_RIGHT) == 0 ? spawnPosY : spawnPosY + max_trans_dist;
       }
@@ -247,31 +249,31 @@ namespace gazebo
     void applyConstraints()
     {
       if (type == SLIDE) {
-        float currDoorPosX = model->GetWorldPose().pos.x;
-        float currDoorPosY = model->GetWorldPose().pos.y;
+        float currDoorPosX = model->WorldPose().Pos().X();
+        float currDoorPosY = model->WorldPose().Pos().Y();
 
-        math::Pose constrainedPose;
+        ignition::math::Pose3d constrainedPose;
 
         if (currDoorPosX > maxPosX) {
-          constrainedPose.pos.x = maxPosX;
+          constrainedPose.Pos().X() = maxPosX;
         } else if (currDoorPosX < minPosX) {
-          constrainedPose.pos.x = minPosX;
+          constrainedPose.Pos().X() = minPosX;
         } else {
-          constrainedPose.pos.x = currDoorPosX;
+          constrainedPose.Pos().X() = currDoorPosX;
         }
 
         if (currDoorPosY > maxPosY) {
-          constrainedPose.pos.y = maxPosY;
+          constrainedPose.Pos().Y() = maxPosY;
         } else if (currDoorPosY < minPosY) {
-          constrainedPose.pos.y = minPosY;
+          constrainedPose.Pos().Y() = minPosY;
         } else {
-          constrainedPose.pos.y = currDoorPosY;
+          constrainedPose.Pos().Y() = currDoorPosY;
         }
 
-          constrainedPose.pos.z = model->GetWorldPose().pos.z;
-          constrainedPose.rot.x = model->GetWorldPose().rot.x;
-          constrainedPose.rot.y = model->GetWorldPose().rot.y;
-          constrainedPose.rot.z = model->GetWorldPose().rot.z;
+          constrainedPose.Pos().Z() = model->WorldPose().Pos().Z();
+          constrainedPose.Rot().X() = model->WorldPose().Rot().X();
+          constrainedPose.Rot().Y() = model->WorldPose().Rot().Y();
+          constrainedPose.Rot().Z() = model->WorldPose().Rot().Z();
 
         model->SetWorldPose(constrainedPose);
       }
@@ -279,25 +281,25 @@ namespace gazebo
 
     void setAngularVel(float rot_z)
     {
-      cmd_vel = math::Vector3();
+      cmd_vel = ignition::math::Vector3d();
 
       if (door_direction.compare(DIRECTION_FLIP_CLOCKWISE) == 0) { 
-        cmd_vel.z = rot_z;
+        cmd_vel.Z() = rot_z;
       } else {
-        cmd_vel.z = -rot_z; 
+        cmd_vel.Z() = -rot_z; 
       }
     }
 
     void setLinearVel(float lin_x, float lin_y) 
     {
-      cmd_vel = math::Vector3();
+      cmd_vel = ignition::math::Vector3d();
 
       if (door_direction.compare(DIRECTION_SLIDE_LEFT) == 0) {
-        cmd_vel.x = -lin_x;
-        cmd_vel.y = -lin_y;
+        cmd_vel.X() = -lin_x;
+        cmd_vel.Y() = -lin_y;
       } else {
-        cmd_vel.x = lin_x;
-        cmd_vel.y = lin_y;
+        cmd_vel.X() = lin_x;
+        cmd_vel.Y() = lin_y;
       }
     }
 
