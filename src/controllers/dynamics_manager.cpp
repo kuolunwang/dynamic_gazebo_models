@@ -38,6 +38,7 @@
 #include <dynamic_gazebo_models/OpenCloseElevDoors.h>
 #include <dynamic_gazebo_models/SetElevProps.h>
 #include <dynamic_gazebo_models/SetVelDoors.h>
+#include <dynamic_gazebo_models/Doorsrad.h>
 #include <dynamic_gazebo_models/TargetFloorElev.h>
 
 #define TYPE_DOOR_STR "door"
@@ -67,7 +68,7 @@ class DynamicsController
 
 		ros::NodeHandle rosNode;
 		ros::ServiceServer add_group_server, delete_group_server, list_groups_server;
-		ros::ServiceServer open_close_doors_server, set_vel_doors_server, target_floor_elev_server, set_elev_props_server, open_close_elev_doors_server;
+		ros::ServiceServer open_close_doors_server, set_vel_doors_server, target_floor_elev_server, set_elev_props_server, open_close_elev_doors_server, control_open_close_doors;
 		
 		ros::Publisher door_cmd_vel_pub, door_active_pub;
 		ros::Publisher elev_target_pub, elev_active_pub, elev_param_pub, elev_door_pub;
@@ -93,10 +94,41 @@ class DynamicsController
 
 			open_close_doors_server = rosNode.advertiseService("model_dynamics_manager/doors/open_close", &DynamicsController::open_close_doors_cb, this);
 			set_vel_doors_server = rosNode.advertiseService("model_dynamics_manager/doors/set_vel", &DynamicsController::set_vel_doors_cb, this);
+			control_open_close_doors = rosNode.advertiseService("model_dynamics_manager/doors/control_door", &DynamicsController::control_doors_cb, this);
 
 			target_floor_elev_server = rosNode.advertiseService("model_dynamics_manager/elevators/target_floor", &DynamicsController::target_floor_elev_cb, this);
 			set_elev_props_server = rosNode.advertiseService("model_dynamics_manager/elevators/set_props", &DynamicsController::set_elev_props_cb, this);
 			open_close_elev_doors_server = rosNode.advertiseService("model_dynamics_manager/elevators/open_close_elev", &DynamicsController::open_close_elev_cb, this);		
+		}
+
+		bool control_doors_cb(dynamic_gazebo_models::Doorsrad::Request &req, dynamic_gazebo_models::Doorsrad::Response &res)
+		{
+			if (!activateDoors(req.group_name)) {
+				return false;
+			}
+
+			geometry_msgs::Twist cmd_vel;
+
+			if (req.state == STATE_OPEN) {
+				cmd_vel.linear.x = -0.5;
+				cmd_vel.linear.y = -0.5;
+				cmd_vel.angular.z = -0.05;
+			} else {
+				cmd_vel.linear.x = 0.5;
+				cmd_vel.linear.y = 0.5;
+				cmd_vel.angular.z = 0.05;
+			}
+
+			door_cmd_vel_pub.publish(cmd_vel);
+
+			ros::Duration(req.rad / 0.05).sleep();
+
+			cmd_vel.angular.z = 0.0;
+
+			door_cmd_vel_pub.publish(cmd_vel);
+
+			return true;
+
 		}
 
 		bool open_close_doors_cb(dynamic_gazebo_models::OpenCloseDoors::Request &req, dynamic_gazebo_models::OpenCloseDoors::Response &res)

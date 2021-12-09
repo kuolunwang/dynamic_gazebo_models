@@ -1,0 +1,4 @@
+string group_name
+bool state
+float32 rad
+---
