@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find dynamic_gazebo_models)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="world_name" value="$(find dynamic_gazebo_models)/worlds/left_with_door_90.world"/>
+  </include>
+
+  <!-- Model Dynamic Manager -->
+  <arg name="add_group_srv" value="/model_dynamics_manager/add_control_group"/>
+
+  <node pkg="dynamic_gazebo_models" type="dynamics_manager" name="dynamics_manager" output="screen"/>
+
+  <!-- Add Control Groups: NOTE - This can also be configured during runtime -->
+  <node pkg="rosservice" type="rosservice" name="flip_door_group" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors',
+        type: 'door',
+        active_units: [2]
+      }
+    }'
+  "/>
+
+</launch>
