@@ -107,6 +107,8 @@ class DynamicsController
 				return false;
 			}
 
+			ROS_INFO("%s", req.group_name.c_str());
+
 			geometry_msgs::Twist cmd_vel;
 
 			if (req.state == STATE_OPEN) {
@@ -137,6 +139,8 @@ class DynamicsController
 				return false;
 			}
 
+			ROS_INFO("%s", req.group_name.c_str());
+
 			geometry_msgs::Twist cmd_vel;
 
 			if (req.state == STATE_OPEN) {
@@ -159,6 +163,8 @@ class DynamicsController
 			if (!activateDoors(req.group_name)) {
 				return false;
 			}
+
+			ROS_INFO("%s", req.group_name.c_str());
 
 			geometry_msgs::Twist cmd_vel;
 
