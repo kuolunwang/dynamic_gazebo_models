@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find dynamic_gazebo_models)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="world_name" value="$(find dynamic_gazebo_models)/worlds/door.world"/>
+  </include>
+
+  <!-- Model Dynamic Manager -->
+  <arg name="add_group_srv" value="/model_dynamics_manager/add_control_group"/>
+
+  <node pkg="dynamic_gazebo_models" type="dynamics_manager" name="dynamics_manager" output="screen"/>
+
+  <!-- Add Control Groups: NOTE - This can also be configured during runtime -->
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_1" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors1',
+        type: 'door',
+        active_units: [6]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_2" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors2',
+        type: 'door',
+        active_units: [5]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_3" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors3',
+        type: 'door',
+        active_units: [1]
+      }
+    }'
+  "/>
+    <node pkg="rosservice" type="rosservice" name="flip_door_group_4" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors4',
+        type: 'door',
+        active_units: [2]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_5" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors5',
+        type: 'door',
+        active_units: [3]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_6" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors6',
+        type: 'door',
+        active_units: [4]
+      }
+    }'
+  "/>
+    <node pkg="rosservice" type="rosservice" name="flip_door_group_7" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors7',
+        type: 'door',
+        active_units: [13]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_8" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors8',
+        type: 'door',
+        active_units: [14]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_9" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors9',
+        type: 'door',
+        active_units: [15]
+      }
+    }'
+  "/>
+    <node pkg="rosservice" type="rosservice" name="flip_door_group_10" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors10',
+        type: 'door',
+        active_units: [16]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_11" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors11',
+        type: 'door',
+        active_units: [17]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_12" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors12',
+        type: 'door',
+        active_units: [18]
+      }
+    }'
+  "/>
+    <node pkg="rosservice" type="rosservice" name="flip_door_group_13" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors13',
+        type: 'door',
+        active_units: [9]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_14" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors14',
+        type: 'door',
+        active_units: [8]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_15" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors15',
+        type: 'door',
+        active_units: [7]
+      }
+    }'
+  "/>
+    <node pkg="rosservice" type="rosservice" name="flip_door_group_16" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors16',
+        type: 'door',
+        active_units: [10]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_17" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors17',
+        type: 'door',
+        active_units: [11]
+      }
+    }'
+  "/>
+
+  <node pkg="rosservice" type="rosservice" name="flip_door_group_18" args="call 
+    $(arg add_group_srv)
+    '{ 
+    group: 
+      {
+        group_name: 'FlipDoors18',
+        type: 'door',
+        active_units: [12]
+      }
+    }'
+  "/>
+
+</launch>
