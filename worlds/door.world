@@ -86,6 +86,57 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
+
+    <model name='Radio'>
+      <static>0</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://Radio/meshes/Radio.dae</uri>
+              <scale>5 5 5</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://Radio/meshes/Radio.dae</uri>
+              <scale>5 5 5</scale>
+            </mesh>
+          </geometry>
+          <plugin name='light_source_visualize' filename='libLightVisualPlugin.so'>
+            <light>
+              <id>light_source</id>
+              <visualize>0</visualize>
+            </light>
+          </plugin>
+        </visual>
+        <light name='light_source' type='point'>
+          <pose frame=''>0.0137 -0.02 0.109 0 -0 0</pose>
+          <attenuation>
+            <range>3</range>
+            <constant>0.2</constant>
+            <linear>0</linear>
+            <quadratic>0.1</quadratic>
+          </attenuation>
+          <diffuse>1 0 0 1</diffuse>
+          <specular>1 0 0 1</specular>
+          <direction>0 0 -1</direction>
+        </light>
+      </link>
+      <plugin name='light_control' filename='libFlashLightPlugin.so'>
+        <light>
+          <id>link/light_source</id>
+          <duration>1.0</duration>
+          <interval>3.0</interval>
+          <color>1 0 0</color>
+        </light>
+      </plugin>
+      <pose frame=''>15.4581 20.8535 0 0 -0 0</pose>
+    </model>
+
     <model name='door_1'>
       <link name='hinge'>
         <pose frame=''>0 0 0 0 -0 0</pose>

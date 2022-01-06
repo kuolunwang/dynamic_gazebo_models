@@ -106,24 +106,23 @@ class DynamicsController
 			if (!activateDoors(req.group_name)) {
 				return false;
 			}
-
 			ROS_INFO("%s", req.group_name.c_str());
-
 			geometry_msgs::Twist cmd_vel;
 
 			if (req.state == STATE_OPEN) {
 				cmd_vel.linear.x = -0.5;
 				cmd_vel.linear.y = -0.5;
-				cmd_vel.angular.z = -0.05;
+				cmd_vel.angular.z = - req.rad;
 			} else {
 				cmd_vel.linear.x = 0.5;
 				cmd_vel.linear.y = 0.5;
-				cmd_vel.angular.z = 0.05;
+				cmd_vel.angular.z = req.rad;
 			}
 
 			door_cmd_vel_pub.publish(cmd_vel);
 
-			ros::Duration(req.rad / 0.05).sleep();
+			// ros::Duration(req.rad / 0.05).sleep();
+			ros::Duration(1).sleep();
 
 			cmd_vel.angular.z = 0.0;
 
@@ -138,7 +137,6 @@ class DynamicsController
 			if (!activateDoors(req.group_name)) {
 				return false;
 			}
-
 			ROS_INFO("%s", req.group_name.c_str());
 
 			geometry_msgs::Twist cmd_vel;
@@ -163,9 +161,7 @@ class DynamicsController
 			if (!activateDoors(req.group_name)) {
 				return false;
 			}
-
 			ROS_INFO("%s", req.group_name.c_str());
-
 			geometry_msgs::Twist cmd_vel;
 
 			cmd_vel.linear.x = req.lin_x;
